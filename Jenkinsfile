@@ -2,21 +2,15 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone') {
+        stage('Checkout') {
             steps {
-                echo 'Code cloned successfully'
+                checkout scm
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                sh 'docker --version'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Tests running'
+                echo "Build started"
             }
         }
     }
