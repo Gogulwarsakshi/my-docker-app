@@ -1,17 +1,14 @@
 pipeline {
     agent any
-
-    environment {
-        DOCKER_IMAGE = "sakshigogul/my-docker-app"
-    }
-
     stages {
-
-        stage('Checkout Code') {
+        stage('Test') {
             steps {
-                checkout scm
+                echo "Pipeline running"
             }
         }
+    }
+
+        
 
         stage('Build Docker Image') {
             steps {
