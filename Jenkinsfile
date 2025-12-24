@@ -1,21 +1,16 @@
 pipeline {
     agent any
-    stages {
-        stage('Test') {
-            steps {
-                echo "Pipeline running"
-            }
-        }
+
+    environment {
+        DOCKER_IMAGE = "sakshigogul/my-docker-app"
     }
 
-        
+    stages {
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                docker build -t myapp:latest .
-                docker tag myapp:latest $DOCKER_IMAGE:latest
-                '''
+                sh 'docker build -t myapp:latest .'
+                sh 'docker tag myapp:latest $DOCKER_IMAGE:latest'
             }
         }
 
@@ -26,29 +21,17 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh '''
-                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    '''
+                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                 }
             }
         }
 
-        stage('Push Image to Docker Hub') {
+        stage('Push Image') {
             steps {
-                sh '''
-                docker push $DOCKER_IMAGE:latest
-                '''
+                sh 'docker push $DOCKER_IMAGE:latest'
             }
         }
     }
 
     post {
         success {
-            echo "✅ Docker image successfully pushed to Docker Hub"
-        }
-        failure {
-            echo "❌ Pipeline failed"
-        }
-    }
-}
-
