@@ -28,7 +28,9 @@ pipeline {
                 sh 'docker push $DOCKER_IMAGE:latest'
             }
         }
-    
+} 
 
     post {
         success {
+        }
+    }
